@@ -1,4 +1,3 @@
-
 // Get references to HTML elements
 const form = document.getElementById("resume-form");
 const generateButton = document.getElementById("generate-button");
@@ -47,6 +46,10 @@ function generateResume() {
         address: document.getElementById("address").value,
     };
 
+  // Get the selected image file
+  const imageInput = document.getElementById("image");
+    const selectedImage = imageInput.files[0];
+
     // Retrieve all education entries
     const educationEntries = document.querySelectorAll("#education-entries .entry");
     const educationList = [];
@@ -78,6 +81,20 @@ function generateResume() {
         return;
     }
 
+     // Display the selected image on the resume (without storing it)
+     if (selectedImage) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const imageSource = event.target.result;
+            const imageElement = document.createElement("img");
+            imageElement.src = imageSource;
+            imageElement.classList.add("profile-image"); // You can add CSS styles to this class
+            document.getElementById("resume").appendChild(imageElement);
+        };
+        reader.readAsDataURL(selectedImage);
+    }
+
+
         // Create a unique ID for the resume
      const resumeId = generateUniqueId();
 
@@ -102,11 +119,12 @@ function generateResume() {
 
       // Push the new resume data into the array
       existingResumes.push(resumeData);
-      console.log(existingResumes);
+    //   console.log(existingResumes);
 
     // Store the updated array in local storage
-    console.log(existingResumes);
+    // console.log(existingResumes);
     localStorage.setItem("resumes", JSON.stringify(existingResumes));
+
 
     // Display the generated resume
     displayResume(resumeData);
@@ -114,21 +132,59 @@ function generateResume() {
 
 // Function to generate a unique ID
 function generateUniqueId() {
-    return  Math.random()*10;
+    return Math.floor(Math.random() * 1000);  
 }
 
 // Function to display the generated resume
 function togglepage(){
-    console.log("hello")
+    // console.log("hello")
     const togglebtn=document.getElementById("return-home-btn").style.display="none";
     const toggleresume=document.getElementById("resume").style.display="none";
+    const editresumebtn= document.getElementById("edit-resume-btn").style.display="none";
+
+      // Clear form fields
+      document.getElementById("name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("address").value = "";
+    
+     // Clear education and work experience entries
+     const educationEntries = document.querySelectorAll("#education-entries .entry");
+    const experienceEntries = document.querySelectorAll("#experience-entries .entry");
+    
+    educationEntries.forEach(entry => {
+        entry.querySelector(".university").value = "";
+        entry.querySelector(".degree").value = "";
+        entry.querySelector(".graduationYear").value = "";
+    });
+    
+    experienceEntries.forEach(entry => {
+        entry.querySelector(".company").value = "";
+        entry.querySelector(".position").value = "";
+        entry.querySelector(".duration").value = "";
+    });
+    document.getElementById("skills").value = "";
+
+
     form.style.display="block";
 
-
 }
+
+
+// Function to edit the resume
+function editResume() {
+    const togglebtn = document.getElementById("return-home-btn").style.display = "none";
+    const toggleresume = document.getElementById("resume").style.display = "none";
+    const editresumebtn= document.getElementById("edit-resume-btn").style.display="none";
+
+    form.style.display = "block";
+}
+
+
 function displayResume(resumeData) {
     const resumeshowdata=document.getElementById("resume").style.display="block";
     const displayresumebtn= document.getElementById("return-home-btn").style.display="block";
+    const editresumebtn= document.getElementById("edit-resume-btn").style.display="block";
     form.style.display="none";
 
     // Create HTML content for the resume
@@ -220,6 +276,10 @@ window.addEventListener("load", () => {
     }
 });
 
+
+
+
+
      // Function to display a resume by index
      function displayResumeByIndex(index) {
             const existingResumes = JSON.parse(localStorage.getItem("resumes")) || [];
@@ -249,4 +309,7 @@ window.addEventListener("load", () => {
             // If the index parameter is present, display the corresponding resume
             const index = parseInt(indexParam);
             displayResumeByIndex(index);
-        }
+        } 
+
+        ///////
+  

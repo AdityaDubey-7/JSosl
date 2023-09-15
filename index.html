@@ -21,6 +21,8 @@
                 <input type="tel" id="phone" required>
                 <label for="address">Address:</label>
                 <input type="text" id="address" required>
+                <label for="image">Image:</label>
+                <input type="file" id="image">
             </fieldset>
 
             <!-- Educational Background Section -->
@@ -65,10 +67,11 @@
 
         <!-- Display Area for Generated Resume -->
         <div id="resume" style="display: none;"></div>
+        <button id="edit-resume-btn" style="display: none;" onclick="editResume()">Edit Resume</button>
         <button id="return-home-btn" style="display: none;" onclick="togglepage()" >Back to Home</button>
-
+<!-- ///////// -->
     </div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
+  
 </body>
 </html>
